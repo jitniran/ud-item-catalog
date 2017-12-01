@@ -1,5 +1,4 @@
 from flask import Flask
-from flask import render_template, url_for, request, redirect
 from views.category import category
 app = Flask(__name__)
 app.register_blueprint(category)

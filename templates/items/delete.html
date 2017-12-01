@@ -1,0 +1,5 @@
+{% include 'header.html' %}
+<form method="post" action="{{ url_for('category.delete',sport_id = sport.id)}}">
+    <h4>Are you sure you want to delete {{ sport.name }} ?</h4>
+    <button type="submit">Yes</button>
+</form>

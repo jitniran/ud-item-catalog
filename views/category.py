@@ -10,7 +10,7 @@ category = Blueprint('category', __name__)
 @category.route('/catalog')
 def catalog():
     """
-    method that lists all sports catagories
+    lists all sports catagories
     """
     sport_catalog = session.query(Sport)
     return render_template('sports/catalog.html', catalog=sport_catalog)
@@ -19,7 +19,7 @@ def catalog():
 @category.route('/catalog/new', methods=['GET', 'POST'])
 def new():
     """
-    method for creating new sport
+    create new sport
     """
     if(request.method == "POST"):
         name = request.form['name']
@@ -35,7 +35,7 @@ def new():
 @category.route('/catalog/<int:sport_id>/edit', methods=['GET', 'POST'])
 def edit(sport_id):
     """
-    method for creating edit sport
+    edit sport
     """
     sport = session.query(Sport).filter_by(id=sport_id).one()
     if(request.method == "POST"):
@@ -51,7 +51,7 @@ def edit(sport_id):
 @category.route('/catalog/<int:sport_id>/delete', methods=['GET', 'POST'])
 def delete(sport_id):
     """
-    method for deleting sport
+    deletes sport
     """
     sport = session.query(Sport).filter_by(id=sport_id).one()
     if(request.method == "POST"):
