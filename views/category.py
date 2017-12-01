@@ -12,8 +12,10 @@ def catalog():
     """
     lists all sports catagories
     """
-    sport_catalog = session.query(Sport)
-    return render_template('sports/catalog.html', catalog=sport_catalog)
+    sport_catalog = session.query(Sport).all()
+    items = session.query(SportItem).order_by(SportItem.id.desc()).all()
+    return render_template('sports/catalog.html', catalog=sport_catalog, 
+                            items=items)
 
 
 @category.route('/catalog/new', methods=['GET', 'POST'])

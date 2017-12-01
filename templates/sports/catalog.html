@@ -1,25 +1,30 @@
 {% include 'header.html' %}
-<body>
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
-                mdl-layout--fixed-header">
-        <header class="mdl-layout__header">
-            <div class="mdl-layout__header-row">
-            <div class="mdl-layout-spacer"></div>
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-                Login
-            </button>
+<div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">Categories</span>
+    <nav class="mdl-navigation">
+        {% for sport in catalog %}
+        <a class="mdl-navigation__link" href="">{{ sport.name }}</a>
+        {% endfor %}
+    </nav>
+</div>
+<main class="mdl-layout__content">
+    <div class="content mdl-grid">
+        {% for item in items %}
+        <div class="mdl-cell mdl-cell--3-col">
+            <div class="demo-card-square mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title mdl-card--expand"></div>
+                <div class="mdl-card__supporting-text">
+                    {{item.name}} ({{item.sport.name}})
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                    href="">
+                    See more
+                    </a>
+                </div>
             </div>
-        </header>
-        <div class="mdl-layout__drawer">
-            <span class="mdl-layout-title">Categories</span>
-            <nav class="mdl-navigation">
-                {% for sport in catalog %}
-                <a class="mdl-navigation__link" href="">{{ sport.name }}</a>
-                {% endfor %}
-            </nav>
         </div>
-        <main class="mdl-layout__content">
-            <div class="page-content"><!-- Your content goes here --></div>
-        </main>
+        {% endfor %}
     </div>
-</body>
+</main>
+{% include 'footer.html'%}

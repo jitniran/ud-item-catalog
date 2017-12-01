@@ -1,10 +1,9 @@
-from flask import Blueprint, render_template
-from flask import url_for, request, redirect
+from flask import (Blueprint, render_template,
+url_for, request, redirect)
 from .initdb import session
 from models.model import Sport, SportItem
 
 item = Blueprint('item', __name__)
-
 
 @item.route('/catalog/<int:sport_id>/item/new', methods=['GET', 'POST'])
 def new(sport_id):
@@ -13,7 +12,7 @@ def new(sport_id):
     """
     sport = session.query(Sport).filter_by(id=sport_id).one()
     if(request.method == "POST"):
-        item = Item()
+        item = SportItem()
         item.name = request.form['name']
         item.description = request.form['description']
         item.price = request.form['price']
@@ -22,7 +21,7 @@ def new(sport_id):
         session.commit()
         return redirect(url_for('category.catalog'))
     else:
-        return render_template('items/new.html')
+        return render_template('items/new.html', sport=sport)
 
 
 @item.route('/catalog/<int:sport_id>/item/<int:item_id>/edit',
