@@ -1,7 +1,10 @@
 from flask import Flask
 from views.category import category
+from views.item import item
+
 app = Flask(__name__)
 app.register_blueprint(category)
+app.register_blueprint(item)
 
 
 if __name__ == '__main__':
