@@ -20,3 +20,7 @@ body {
 .edit-div {
     padding: 20px;
 }
+.align-text {
+    left : 20%;
+    position: fixed;
+}
