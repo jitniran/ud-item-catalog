@@ -5,6 +5,15 @@ from models.model import Sport, SportItem
 
 item = Blueprint('item', __name__)
 
+@item.route('/catalog/<int:sport_id>/item/show')
+def show(sport_id):
+    """
+    list all items of a particular sport
+    """
+    items = session.query(SportItem).filter_by(sport_id=sport_id)
+    return render_template('items/show.html', items=items)
+
+
 @item.route('/catalog/<int:sport_id>/item/new', methods=['GET', 'POST'])
 def new(sport_id):
     """

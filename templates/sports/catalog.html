@@ -3,7 +3,8 @@
     <span class="mdl-layout-title">Categories</span>
     <nav class="mdl-navigation">
         {% for sport in catalog %}
-        <a class="mdl-navigation__link" href="">{{ sport.name }}</a>
+        <a class="mdl-navigation__link" href="{{url_for('item.show',sport_id=sport.id)}}">
+            {{ sport.name }}</a>
         {% endfor %}
     </nav>
 </div>
