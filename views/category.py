@@ -31,12 +31,13 @@ def new():
     else:
         return render_template('sports/new.html')
 
+
 @category.route('/catalog/<int:sport_id>/edit', methods=['GET', 'POST'])
 def edit(sport_id):
     """
     method for creating edit sport
     """
-    sport = session.query(Sport).filter_by(id = sport_id).one()
+    sport = session.query(Sport).filter_by(id=sport_id).one()
     if(request.method == "POST"):
         name = request.form['name']
         sport.name = name
@@ -44,5 +45,19 @@ def edit(sport_id):
         session.commit()
         return redirect(url_for('category.catalog'))
     else:
-        return render_template('sports/edit.html',sport=sport)
+        return render_template('sports/edit.html', sport=sport)
 
+
+@category.route('/catalog/<int:sport_id>/delete', methods=['GET', 'POST'])
+def delete(sport_id):
+    """
+    method for deleting sport
+    """
+    sport = session.query(Sport).filter_by(id=sport_id).one()
+    if(request.method == "POST"):
+        # remove sport items and commmit to database
+        session.delete(sport)
+        session.commit()
+        return redirect(url_for('category.catalog'))
+    else:
+        return render_template('sports/delete.html', sport=sport)
