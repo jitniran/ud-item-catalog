@@ -30,3 +30,19 @@ def new():
         return redirect(url_for('category.catalog'))
     else:
         return render_template('sports/new.html')
+
+@category.route('/catalog/<int:sport_id>/edit', methods=['GET', 'POST'])
+def edit(sport_id):
+    """
+    method for creating edit sport
+    """
+    sport = session.query(Sport).filter_by(id = sport_id).one()
+    if(request.method == "POST"):
+        name = request.form['name']
+        sport.name = name
+        session.add(sport)
+        session.commit()
+        return redirect(url_for('category.catalog'))
+    else:
+        return render_template('sports/edit.html',sport=sport)
+
