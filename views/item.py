@@ -1,9 +1,11 @@
 from flask import (Blueprint, render_template,
-url_for, request, redirect)
+                   url_for, request, redirect)
 from .initdb import session
+from flask import session as login_session
 from models.model import Sport, SportItem
 
 item = Blueprint('item', __name__)
+
 
 @item.route('/catalog/<int:sport_id>/item/show')
 def show(sport_id):
@@ -12,6 +14,7 @@ def show(sport_id):
     """
     items = session.query(SportItem).filter_by(sport_id=sport_id)
     return render_template('items/show.html', items=items)
+
 
 @item.route('/catalog/item/<int:item_id>/view')
 def view(item_id):
@@ -27,6 +30,8 @@ def new(sport_id):
     """
     create new sport
     """
+    if 'username' not in login_session:
+        return redirect('/login')
     sport = session.query(Sport).filter_by(id=sport_id).one()
     if(request.method == "POST"):
         item = SportItem()
@@ -47,6 +52,8 @@ def edit(item_id):
     """
     edit sport item
     """
+    if 'username' not in login_session:
+        return redirect('/login')
     item = session.query(SportItem).filter_by(id=item_id).one()
     if(request.method == "POST"):
         item.name = request.form['name']
@@ -65,6 +72,8 @@ def delete(item_id):
     """
     deletes a item of a sport
     """
+    if 'username' not in login_session:
+        return redirect('/login')
     item = session.query(SportItem).filter_by(id=item_id).one()
     if(request.method == "POST"):
         # remove sport item and commmit to database
