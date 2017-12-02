@@ -1,7 +1,29 @@
 {% include 'header.html' %}
-<form method="post" action="{{ url_for('category.edit',sport_id = sport.id)}}">
-    <label>Name:
-        <input type="text" name="name" placeholder="{{ sport.name }}">
-    </label>
-    <button type="submit">Submit</button>
-</form>
+<div class="mdl-grid max-width">
+    <div class="edit-div mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+        <form method="post" action="{{ url_for('item.edit', item_id=item.id)}}">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" placeholder="{{item.name}}" type="text" id="1" name="name"/>
+                <label class="mdl-textfield__label" for="1">Name..</label>
+            </div>
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <textarea class="mdl-textfield__input" type="text" rows= "3" id="2"
+                    name="description" ></textarea>
+                <label class="mdl-textfield__label" for="2">Description...</label>
+            </div>
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" wname="price" id="3"/>
+                <label class="mdl-textfield__label" for="3">Price...</label>
+                <span class="mdl-textfield__error">Input is not a number!</span>
+            </div>
+
+            <p>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                type="submit">Submit</button>
+            </p>
+        </form>
+    </div>
+</div>
+{% include 'footer.html' %}

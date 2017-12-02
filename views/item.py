@@ -13,6 +13,14 @@ def show(sport_id):
     items = session.query(SportItem).filter_by(sport_id=sport_id)
     return render_template('items/show.html', items=items)
 
+@item.route('/catalog/item/<int:item_id>/view')
+def view(item_id):
+    """
+    view one item
+    """
+    item = session.query(SportItem).filter_by(id=item_id).one()
+    return render_template('items/view.html', item=item)
+
 
 @item.route('/catalog/<int:sport_id>/item/new', methods=['GET', 'POST'])
 def new(sport_id):
@@ -33,13 +41,12 @@ def new(sport_id):
         return render_template('items/new.html', sport=sport)
 
 
-@item.route('/catalog/<int:sport_id>/item/<int:item_id>/edit',
+@item.route('/catalog/item/<int:item_id>/edit',
             methods=['GET', 'POST'])
-def edit(sport_id, item_id):
+def edit(item_id):
     """
     edit sport item
     """
-    sport = session.query(Sport).filter_by(id=sport_id).one()
     item = session.query(SportItem).filter_by(id=item_id).one()
     if(request.method == "POST"):
         item.name = request.form['name']
@@ -49,21 +56,20 @@ def edit(sport_id, item_id):
         session.commit()
         return redirect(url_for('category.catalog'))
     else:
-        return render_template('items/edit.html', sport=sport, item=item)
+        return render_template('items/edit.html', item=item)
 
 
-@item.route('/catalog/<int:sport_id>/item/<int:item_id>/delete',
+@item.route('/catalog/item/<int:item_id>/delete',
             methods=['GET', 'POST'])
-def delete(sport_id, item_id):
+def delete(item_id):
     """
     deletes a item of a sport
     """
-    sport = session.query(Sport).filter_by(id=sport_id).one()
     item = session.query(SportItem).filter_by(id=item_id).one()
     if(request.method == "POST"):
         # remove sport item and commmit to database
         session.delete(item)
         session.commit()
-        return redirect(url_for('item.catalog'))
+        return redirect(url_for('category.catalog'))
     else:
-        return render_template('sports/delete.html', sport=sport, item=item)
+        return render_template('items/delete.html', item=item)

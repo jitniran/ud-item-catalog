@@ -1,0 +1,19 @@
+{% include 'header.html' %}
+<section>
+    <div class="mdl-grid max-width mdl-card mdl-shadow--4dp">
+        <div class="mdl-cell mdl-cell--12-col">
+            <h2>{{item.name}}</h2>
+            <p>
+                {{item.description}}
+            </p>
+            <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                href="{{url_for('item.edit', item_id=item.id)}}">
+                Edit
+            </a>
+            <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                href="{{url_for('item.delete', item_id=item.id)}}">
+                Delete
+            </a>
+        </div>
+    </div>
+</section>
