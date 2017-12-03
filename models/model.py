@@ -12,7 +12,18 @@ class Sport(Base):
    
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
- 
+
+    @property
+    def serialize(self):
+        """
+        return json sport
+        """
+        return{
+            'id':self.id,
+            'name':self.name,
+        }
+
+
 class SportItem(Base):
     __tablename__ = 'sport_item'
 
@@ -22,7 +33,20 @@ class SportItem(Base):
     price = Column(String(8))
     sport_id = Column(Integer,ForeignKey('sport.id'))
     sport = relationship(Sport) 
- 
+
+    @property
+    def serialize(self):
+        """
+        return json SportItem
+        """
+        return{
+            'id':self.id,
+            'sport_id':self.sport_id,
+            'title':self.name,
+            'description':self.description,
+            'price':self.price,
+        }
+
 
 engine = create_engine('sqlite:///sportitems.db')
 Base.metadata.create_all(engine)

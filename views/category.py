@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template
-from flask import url_for, request, redirect
+from flask import (Blueprint, render_template,
+                   url_for, request, redirect, jsonify)
 from .initdb import session
 from models.model import Sport, SportItem
 from flask import session as login_session
@@ -70,3 +70,20 @@ def delete(sport_id):
         return redirect(url_for('category.catalog'))
     else:
         return render_template('sports/delete.html', sport=sport)
+
+#Json API to view the whole catalog
+@category.route('/catalog/JSON')
+def catalogJSON():
+    """
+    makes a json of present catalog
+    """
+    sports = session.query(Sport).all()
+    sport_list = []
+    for sport in sports:
+        sport_dict = {}
+        sport_dict['id'] = sport.id
+        sport_dict['name'] = sport.name
+        items = session.query(SportItem).filter_by(sport_id=sport.id).all()
+        sport_dict['items'] = [i.serialize for i in items]
+        sport_list.append(sport_dict)
+    return jsonify(catalog=sport_list)
