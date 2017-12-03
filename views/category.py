@@ -71,7 +71,9 @@ def delete(sport_id):
     else:
         return render_template('sports/delete.html', sport=sport)
 
-#Json API to view the whole catalog
+# Json API to view the whole catalog
+
+
 @category.route('/catalog/JSON')
 def catalogJSON():
     """
