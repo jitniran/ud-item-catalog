@@ -1,7 +1,7 @@
-{% include 'header.html' %}
+{% include 'header2.html' %}
 <div class="mdl-grid max-width">
     <div class="edit-div mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
-        <form method="post" action="{{ url_for('item.new', sport_id=sport.id    )}}">
+        <form method="post" action="{{ url_for('item.new', sport_id=sport.id)}}">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input class="mdl-textfield__input" type="text" id="1" name="name"/>
                 <label class="mdl-textfield__label" for="1">Name..</label>
@@ -14,7 +14,7 @@
             </div>
 
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" wname="price" id="3"/>
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" name="price" id="3"/>
                 <label class="mdl-textfield__label" for="3">Price...</label>
                 <span class="mdl-textfield__error">Input is not a number!</span>
             </div>
