@@ -1,10 +1,23 @@
 from flask import (Blueprint, render_template,
-                   url_for, request, redirect)
+                   url_for, request, redirect, flash)
 from .initdb import session
 from flask import session as login_session
 from models.model import Sport, SportItem
+from functools import wraps
 
 item = Blueprint('item', __name__)
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' in login_session:
+            return f(*args, **kwargs)
+        else:
+            flash('You are not allowed to access there')
+            return redirect('/login')
+    return decorated_function
+
 
 
 @item.route('/catalog/<int:sport_id>/item/show')
@@ -26,12 +39,11 @@ def view(item_id):
 
 
 @item.route('/catalog/<int:sport_id>/item/new', methods=['GET', 'POST'])
+@login_required
 def new(sport_id):
     """
     create new sport
     """
-    if 'username' not in login_session:
-        return redirect('/login')
     sport = session.query(Sport).filter_by(id=sport_id).one()
     if(request.method == "POST"):
         item = SportItem()
@@ -48,12 +60,11 @@ def new(sport_id):
 
 @item.route('/catalog/item/<int:item_id>/edit',
             methods=['GET', 'POST'])
+@login_required
 def edit(item_id):
     """
     edit sport item
     """
-    if 'username' not in login_session:
-        return redirect('/login')
     item = session.query(SportItem).filter_by(id=item_id).one()
     if(request.method == "POST"):
         item.name = request.form['name']
@@ -68,12 +79,11 @@ def edit(item_id):
 
 @item.route('/catalog/item/<int:item_id>/delete',
             methods=['GET', 'POST'])
+@login_required
 def delete(item_id):
     """
     deletes a item of a sport
     """
-    if 'username' not in login_session:
-        return redirect('/login')
     item = session.query(SportItem).filter_by(id=item_id).one()
     if(request.method == "POST"):
         # remove sport item and commmit to database

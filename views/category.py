@@ -1,10 +1,22 @@
 from flask import (Blueprint, render_template,
-                   url_for, request, redirect, jsonify)
+                   url_for, request, redirect, jsonify, flash)
 from .initdb import session
 from models.model import Sport, SportItem
 from flask import session as login_session
+from functools import wraps
 
 category = Blueprint('category', __name__)
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' in login_session:
+            return f(*args, **kwargs)
+        else:
+            flash('You are not allowed to access there')
+            return redirect('/login')
+    return decorated_function
 
 
 @category.route('/')
@@ -20,12 +32,13 @@ def catalog():
 
 
 @category.route('/catalog/new', methods=['GET', 'POST'])
+@login_required
 def new():
     """
     create new sport
     """
-    if 'username' not in login_session:
-        return redirect('/login')
+    # if 'username' not in login_session:
+    #     return redirect('/login')
     if(request.method == "POST"):
         name = request.form['name']
         sport = Sport()
@@ -38,12 +51,11 @@ def new():
 
 
 @category.route('/catalog/<int:sport_id>/edit', methods=['GET', 'POST'])
+@login_required
 def edit(sport_id):
     """
     edit sport
     """
-    if 'username' not in login_session:
-        return redirect('/login')
     sport = session.query(Sport).filter_by(id=sport_id).first()
     if(request.method == "POST" and sport is not None):
         name = request.form['name']
@@ -56,12 +68,11 @@ def edit(sport_id):
 
 
 @category.route('/catalog/<int:sport_id>/delete', methods=['GET', 'POST'])
+@login_required
 def delete(sport_id):
     """
     deletes sport
     """
-    if 'username' not in login_session:
-        return redirect('/login')
     sport = session.query(Sport).filter_by(id=sport_id).first()
     if(request.method == "POST" and sport is not None):
         # remove sport items and commmit to database

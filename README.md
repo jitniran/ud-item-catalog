@@ -29,4 +29,5 @@
 
 ### JSON endpoints
 
-    1.'/catalog/JSON' : gives the present list of sports categories and items
+    1.'/catalog/JSON' : returns the present list of sports categories and items
+    2.'/catalog/item/<item>/JSON' : returns a Sport item
