@@ -1,7 +1,8 @@
 {% include 'header.html' %}
-    <form method="post" action="{{ url_for('category.new')}}">
-        <label>Name:
-            <input type="text" name="name">
-        </label>
-        <button type="submit">Submit</button>
-    </form>
+<form method="post" action="{{ url_for('category.new')}}">
+    <label>Name:
+        <input type="text" name="name">
+    </label>
+    <button type="submit">Submit</button>
+</form>
+{% include 'footer.html' %}
