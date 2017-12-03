@@ -24,3 +24,7 @@ body {
     left : 20%;
     position: fixed;
 }
+
+.bold-text {
+    font-size: 30px;
+}

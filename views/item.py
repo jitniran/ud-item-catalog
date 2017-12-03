@@ -25,7 +25,7 @@ def show(sport_id):
     list all items of a particular sport
     """
     items = session.query(SportItem).filter_by(sport_id=sport_id)
-    return render_template('items/show.html', items=items)
+    return render_template('items/show.html', sport_id=sport_id, items=items)
 
 
 @item.route('/catalog/item/<int:item_id>/view')

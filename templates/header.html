@@ -22,14 +22,14 @@
                 <div class="mdl-layout-spacer"></div>
                 {% if 'username' not in session %}
                 <a class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
-                href="{{url_for('showLogin')}}">
-                Login
-                </a>
+                href="{{url_for('showLogin')}}">Login</a>
                 {% else %}
-                <a class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
-                href="{{url_for('gdisconnect')}}">
-                Logout
+                <nav class="mdl-navigation">
+                    <a class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
+                    href="{{url_for('category.new')}}">Add Sport</a>
+                    <a class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
+                    href="{{url_for('gdisconnect')}}">Logout</a>
+                </nav>
                 {% endif %}
-            </a>
             </div>
         </header>
