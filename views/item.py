@@ -19,7 +19,6 @@ def login_required(f):
     return decorated_function
 
 
-
 @item.route('/catalog/<int:sport_id>/item/show')
 def show(sport_id):
     """
@@ -34,7 +33,7 @@ def view(item_id):
     """
     view one item
     """
-    item = session.query(SportItem).filter_by(id=item_id).one()
+    item = session.query(SportItem).filter_by(id=item_id).one_or_none()
     return render_template('items/view.html', item=item)
 
 
@@ -44,13 +43,14 @@ def new(sport_id):
     """
     create new sport
     """
-    sport = session.query(Sport).filter_by(id=sport_id).one()
+    sport = session.query(Sport).filter_by(id=sport_id).one_or_none()
     if(request.method == "POST"):
         item = SportItem()
         item.name = request.form['name']
         item.description = request.form['description']
         item.price = request.form['price']
         item.sport = sport
+        item.user_id = login_session['user_id']
         session.add(item)
         session.commit()
         return redirect(url_for('category.catalog'))
@@ -65,7 +65,10 @@ def edit(item_id):
     """
     edit sport item
     """
-    item = session.query(SportItem).filter_by(id=item_id).one()
+    item = session.query(SportItem).filter_by(id=item_id).one_or_none()
+    if(item.user_id != login_session['user_id']):
+        flash('You are not authorized')
+        return redirect(url_for('category.catalog'))
     if(request.method == "POST"):
         item.name = request.form['name']
         item.description = request.form['description']
@@ -84,7 +87,10 @@ def delete(item_id):
     """
     deletes a item of a sport
     """
-    item = session.query(SportItem).filter_by(id=item_id).one()
+    item = session.query(SportItem).filter_by(id=item_id).one_or_none()
+    if(item.user_id != login_session['user_id']):
+        flash('You are not authorized')
+        return redirect(url_for('category.catalog'))
     if(request.method == "POST"):
         # remove sport item and commmit to database
         session.delete(item)

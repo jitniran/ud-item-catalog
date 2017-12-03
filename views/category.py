@@ -37,12 +37,11 @@ def new():
     """
     create new sport
     """
-    # if 'username' not in login_session:
-    #     return redirect('/login')
     if(request.method == "POST"):
         name = request.form['name']
         sport = Sport()
         sport.name = name
+        sport.user_id = login_session['user_id']
         session.add(sport)
         session.commit()
         return redirect(url_for('category.catalog'))
@@ -56,7 +55,10 @@ def edit(sport_id):
     """
     edit sport
     """
-    sport = session.query(Sport).filter_by(id=sport_id).first()
+    sport = session.query(Sport).filter_by(id=sport_id).one_or_none()
+    if(sport.user_id != login_session['user_id']):
+        flash('You are not authorized')
+        return redirect(url_for('category.catalog'))
     if(request.method == "POST" and sport is not None):
         name = request.form['name']
         sport.name = name
@@ -73,9 +75,12 @@ def delete(sport_id):
     """
     deletes sport
     """
-    sport = session.query(Sport).filter_by(id=sport_id).first()
+    sport = session.query(Sport).filter_by(id=sport_id).one_or_none()
+    if(sport.user_id != login_session['user_id']):
+        flash('You are not authorized')
+        return redirect(url_for('category.catalog'))
     if(request.method == "POST" and sport is not None):
-        # remove sport items and commmit to database
+        session.query(SportItem).filter_by(sport_id=sport_id).delete()
         session.delete(sport)
         session.commit()
         return redirect(url_for('category.catalog'))
@@ -107,8 +112,8 @@ def itemJSON(item_id):
     """
     sends a json of a item
     """
-    item = session.query(SportItem).filter_by(id=item_id).first()
-    if item is None :
+    item = session.query(SportItem).filter_by(id=item_id).one_or_none()
+    if(item is None):
         return jsonify(response='item not found')
     else:
         return jsonify(item=item.serialize)

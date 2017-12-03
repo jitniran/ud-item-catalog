@@ -3,6 +3,8 @@ from flask import (Flask, render_template,
 from views.category import category
 from views.item import item
 from flask import session as login_session
+from views.initdb import session
+from models.model import User
 import random
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
@@ -106,6 +108,12 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
+    # check if user exists else make a new user
+    user_id = getUserID(login_session['email'])
+    if not user_id:
+        user_id = createUser(login_session)
+    login_session['user_id'] = user_id
+
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
@@ -149,6 +157,36 @@ def gdisconnect():
                                             'given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
+
+
+def createUser(login_session):
+    """
+    takes login session and creates a user
+    """
+    newUser = User(name=login_session['username'], email=login_session[
+                   'email'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+
+def getUserInfo(user_id):
+    """
+    takes user_id and returns user
+    """
+    user = session.query(User).filter_by(id=user_id).one_or_none()
+    return user
+
+
+def getUserID(email):
+    """
+    takes email and returns user.id
+    """
+    user = session.query(User).filter_by(email=email).one_or_none()
+    if(user is None):
+        return None
+    return user.id
 
 
 if __name__ == '__main__':
